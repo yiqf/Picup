@@ -1,0 +1,12 @@
+resource:
+  path: resource
+useragent:
+  filename: fake_useragent_0.1.11.json
+account:
+  filename: account.yaml
+  username:
+    encrypt: true
+  password:
+    encrypt: true
+
+
