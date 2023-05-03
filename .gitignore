@@ -15,3 +15,8 @@ venv.bak/
 
 # .idea
 .idea/
+
+cmd
+Picup.build
+Picup.dist
+*.spec
