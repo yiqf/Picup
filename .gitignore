@@ -20,3 +20,4 @@ cmd
 Picup.build
 Picup.dist
 *.spec
+resource/secret_key/
