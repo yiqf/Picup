@@ -1,9 +1,8 @@
-
 """
 Time:     2023/3/6 14:25
 Author:   忆千峰
 Version:  V 0.1
-File:     __init__.py.py
+File:     __init__.py
 Email:    yiqf2022@126.com
 """
 import os.path

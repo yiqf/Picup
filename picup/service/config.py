@@ -145,22 +145,21 @@ class ToolEnDe:
         except Exception as e:
             raise ParamException(f"解密失败 {e.__class__.__name__}")
 
-    @staticmethod
-    def create_keys():
+    def create_keys(self):
         if not os.path.isdir(secret_key_path): os.makedirs(secret_key_path)
         public_key, private_key = rsa.newkeys(1024)
         public = public_key.save_pkcs1()
-        with open(f'{secret_key_path}/public_rsa.pem', 'wb+') as f:
+        with open(self.public_key_file, 'wb+') as f:
             f.write(public)
 
         private = private_key.save_pkcs1()
-        with open(f'{secret_key_path}/private_rsa.pem', 'wb+') as f:
+        with open(self.private_key_file, 'wb+') as f:
             f.write(private)
 
     @property
     def public_key(self):
         if os.path.exists(self.public_key_file):
-            with open(f'{secret_key_path}/public_rsa.pem', 'rb') as f:
+            with open(self.public_key_file, 'rb') as f:
                 public_key = rsa.PublicKey.load_pkcs1(f.read())
             return public_key
         else:
@@ -169,7 +168,7 @@ class ToolEnDe:
     @property
     def private_key(self):
         if os.path.exists(self.private_key_file):
-            with open(f'{secret_key_path}/private_rsa.pem', 'rb') as f:
+            with open(self.private_key_file, 'rb') as f:
                 private_key = rsa.PrivateKey.load_pkcs1(f.read())
             return private_key
         else:

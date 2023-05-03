@@ -1,4 +1,3 @@
-
 import json
 import random
 from picup import resource_path, config_data
@@ -6,7 +5,7 @@ from picup import resource_path, config_data
 
 class UserAgent:
     def __init__(self):
-        filename = config_data['useragent.filename']
+        filename: str = config_data['useragent.filename']
         filepath = f"{resource_path}/{filename}"
         try:
             with open(filepath, encoding='utf-8', mode='rt') as fp:

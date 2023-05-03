@@ -15,7 +15,7 @@ class CompressBase:
     注意，需要设置name属性，标识压缩功能名称，不然可能无法使用
     """
 
-    name = ""
+    name = ""  
 
     def __init__(self):
         pass
