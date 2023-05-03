@@ -1,9 +1,9 @@
-![Picup](https://raw.githubusercontent.com/yiqf/Picup/master/Picup.png)
+<img src="https://raw.githubusercontent.com/yiqf/Picup/master/Picup.png" alt="Picup" style="zoom: 67%;" />
 
 本软件主要实现WebDav服务器的文件上传，以完成与Markdown文档的对接。  
-  
+
 仅为方便个人使用，未经授权，请勿转载和传播!  
-  
+
 此软件仅作为学习交流使用，不用于任何商业用途。
 
 ## 使用说明
