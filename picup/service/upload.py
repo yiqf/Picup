@@ -48,7 +48,8 @@ class Upload(Base):
             img_data = fp.read()
             dto: CompressDataDto = compress_obj(img_data, compress=0)
             if dto.success:
-                compress_message = f"压缩成功: {dto.source_size / 1024:.2f}kb->{dto.target_size / 1024:.2f}kb ratio:{dto.ratio:.4f}"
+                compress_message = f"{dto.callback_message if dto.callback_message else '压缩成功'}: " \
+                                   f"{dto.source_size / 1024:.2f}kb->{dto.target_size / 1024:.2f}kb ratio:{dto.ratio:.4f}"
                 self._ui.upload_text.setText(f"{compress_message}")
                 compress_message += "\n"
             else:

@@ -5,8 +5,9 @@ Version:  V 0.1
 File:     base.py
 Email:    yiqf2022@126.com
 """
+import requests
 from abc import abstractmethod
-from picup.compress.public import CompressDataDto, CompressPathDto
+from picup.compress.public import CompressPathDto, CompressDataDto, CompressException
 
 
 class CompressBase:
@@ -15,7 +16,7 @@ class CompressBase:
     注意，需要设置name属性，标识压缩功能名称，不然可能无法使用
     """
 
-    name = ""  
+    _name = ""
 
     def __init__(self):
         pass
@@ -28,6 +29,14 @@ class CompressBase:
                        *args, **kwargs) -> CompressPathDto:
         pass
 
+    @staticmethod
+    def download_to_buffer(download_url: str, *args, **kwargs):
+        try:
+            res = requests.get(download_url)
+            return res.content
+        except Exception as e:
+            raise CompressException(f"图片回传异常 {e.__class__.__name__}")
+
     @property
     def name(self):
-        return self.name
+        return self._name
