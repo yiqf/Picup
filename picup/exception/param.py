@@ -8,5 +8,5 @@ Email:    yiqf2022@126.com
 
 
 class ParamException(Exception):
-    def __init__(self, *args, **kwargs):
-        super(ParamException, self).__init__(*args, **kwargs)
+    def __init__(self, *args):
+        super(ParamException, self).__init__(*args)

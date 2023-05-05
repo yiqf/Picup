@@ -24,7 +24,7 @@ class MyQLabel(QLabel):
         super(MyQLabel, self).__init__(*args, **kwargs)
         self._lock = threading.Lock()
         self._step = 0
-        self.min_interval = 0.1  
+        self.min_interval = 0.1
 
     def setText(self, arg__1: str):
         """
@@ -38,7 +38,7 @@ class MyQLabel(QLabel):
         重写setText函数，防止过快写入导致的程序报错
         """
         self._lock.acquire()
-        if step == self._step:  
+        if step == self._step:
             super(MyQLabel, self).setText(arg__1)
             time.sleep(self.min_interval)
         self._lock.release()
@@ -54,16 +54,13 @@ class MyPushButton(QPushButton):
         self.setAcceptDrops(True)
         self._drag = None
 
-    
     def dragEnterEvent(self, event):
-        
-        
+
         if event.mimeData().hasText():
             event.accept()
         else:
             event.ignore()
 
-    
     def dropEvent(self, event):
         res = re.search("file:///(.*)", event.mimeData().text())
         if res and self._drag:
@@ -87,7 +84,7 @@ class MyFonts(QFont):
         if os.path.exists(font_path):
             id = QFontDatabase.addApplicationFont(font_path)
             fontstr = QFontDatabase.applicationFontFamilies(id)[0]
-            
+
             super(MyFonts, self).setFamily(fontstr)
         else:
             print(f"缺少字体{arg__1}")

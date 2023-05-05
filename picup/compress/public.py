@@ -40,7 +40,6 @@ class CompressDataDto:
     """
     success: bool = False
     code: str = None
-    callback_message: str = ""
     error_message: str = ""
     source_data: bytes = None
     source_size: int = None

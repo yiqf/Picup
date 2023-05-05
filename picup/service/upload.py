@@ -39,7 +39,7 @@ class Upload(Base):
         """
         拖拽进入，按文件对象上传
         """
-        
+
         compress_message = ""
         compress_button_id = data["compress"]
         if compress_button_id != 0:
@@ -48,8 +48,7 @@ class Upload(Base):
             img_data = fp.read()
             dto: CompressDataDto = compress_obj(img_data, compress=0)
             if dto.success:
-                compress_message = f"{dto.callback_message if dto.callback_message else '压缩成功'}: " \
-                                   f"{dto.source_size / 1024:.2f}kb->{dto.target_size / 1024:.2f}kb ratio:{dto.ratio:.4f}"
+                compress_message = f"{button_name} : {dto.source_size / 1024:.2f}kb->{dto.target_size / 1024:.2f}kb ratio:{dto.ratio:.4f}"
                 self._ui.upload_text.setText(f"{compress_message}")
                 compress_message += "\n"
             else:
@@ -59,10 +58,8 @@ class Upload(Base):
             fp.write(dto.target_data)
             fp.seek(0)
 
-        
         if not self._is_enabled(step): return
 
-        
         self._ui.upload_text.setText(f"{compress_message}正在上传...")
         try:
             custom_link = webdav.upload_file_obj(fp, ext, data)
@@ -74,7 +71,7 @@ class Upload(Base):
             self._ui.upload_text.setText(f"上传失败，请检查网络和参数配置！\n{e.__class__.__name__}")
 
     def _upload_with_url(self, step, data, url):
-        if url.startswith("http"):  
+        if url.startswith("http"):
             self._ui.upload_text.setText(f"图片读取中({url})...")
             result = re.search(r".*(\.[^\.]*$)", url.split("?")[0])
             ext = result.group(1) if result else ""

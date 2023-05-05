@@ -8,5 +8,5 @@ Email:    yiqf2022@126.com
 
 
 class UploadException(Exception):
-    def __init__(self, *args, **kwargs):
-        super(UploadException, self).__init__(*args, **kwargs)
+    def __init__(self, *args):
+        super(UploadException, self).__init__(*args)
