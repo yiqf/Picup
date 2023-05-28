@@ -8,7 +8,7 @@ Email:    yiqf2022@126.com
 import time
 from threading import Thread
 
-from PyQt5 import QtCore, QtWidgets
+from PySide2 import QtCore, QtWidgets
 
 from picup.compress.base import CompressBase
 from picup.ui.custom_inner import MyFonts
@@ -24,7 +24,6 @@ class Base:
         self._ui.setupUi(scale_rate, version)
         self._ui.setWindowIcon(icon)
         self._ui.setWindowFlags(
-
             QtCore.Qt.FramelessWindowHint
         )
 

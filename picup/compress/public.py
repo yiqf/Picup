@@ -11,11 +11,14 @@ from types import DynamicClassAttribute
 
 
 class ResEnum(Enum):
+    
     SUCCESS = ("0000", "操作已完成")
     PASS = ("0001", "压缩率小于设定值，跳过压缩....")
 
+    
     FAILED = ("9999", "操作失败")
 
+    
     OVERFLOW = ("9110", "too many requests")
     EXCEEDLIMIT = ("9111", "exceed limit")
 
@@ -40,7 +43,7 @@ class CompressDataDto:
     """
     success: bool = False
     code: str = None
-    error_message: str = ""
+    error_message: str = ""  
     source_data: bytes = None
     source_size: int = None
     target_data: bytes = None
@@ -95,7 +98,7 @@ def compress_image(compress_method: callable,
             source_data = f.read()
         data_dto: CompressDataDto = compress_method(source_data, compress, *args, **kwargs)
         path_dto.copy_from_data(data_dto)
-        target_data = get_data_writeable(data_dto)
+        target_data = get_data_writeable(data_dto)  
         if target_data:
             with open(target_path, 'wb') as f:
                 f.write(target_data)

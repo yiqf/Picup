@@ -7,9 +7,9 @@ Email:    yiqf2022@126.com
 对完整ui进行继承附加操作
 """
 
-from PyQt5 import QtCore
-from PyQt5.QtCore import QCoreApplication
-from PyQt5.QtWidgets import QSystemTrayIcon, QAction, QMenu
+from PySide2 import QtCore
+from PySide2.QtCore import QCoreApplication
+from PySide2.QtWidgets import QSystemTrayIcon, QAction, QMenu
 
 from picup.ui.main_form import Ui_Form
 
@@ -18,6 +18,7 @@ class RepUi(Ui_Form):
     def __init__(self, icon):
         super(RepUi, self).__init__()
 
+        
         self.tray_icon = QSystemTrayIcon()
         self.tray_icon.setIcon(icon)
         self.menu = QMenu()
@@ -25,33 +26,41 @@ class RepUi(Ui_Form):
         self.menu.addAction(QAction('显示', self.tray_icon, triggered=self.show_ahead))
         self.menu.addAction(QAction('隐藏', self.tray_icon, triggered=self.hide))
         self.menu.addAction(QAction('退出', self.tray_icon, triggered=self.quit_app))
-
+        
         self.tray_icon.activated.connect(self.act)
         self.tray_icon.setContextMenu(self.menu)
 
+        
         self.Flag = False
         self.mouse_x = None
         self.mouse_y = None
         self.origin_x = None
         self.origin_y = None
 
+        
         self._paste_method = None
 
+        
         self.run_flag = True
 
-    def act(self, reason):
+    
 
+    def act(self, reason):
+        
         if reason == 2:
             if self.isVisible() and not self.isMinimized():
                 self.hide()
             else:
                 self.show()
                 self.showNormal()
+        
 
     def quit_app(self):
-
+        
+        
+        
         self.run_flag = False
-        self.show()
+        self.show()  
         self.tray_icon.setVisible(False)
         QCoreApplication.instance().quit()
 
@@ -60,6 +69,7 @@ class RepUi(Ui_Form):
         self.activateWindow()
         self.showNormal()
 
+    
     def set_paste_method(self, paste_method):
         self._paste_method = paste_method
 
@@ -68,9 +78,11 @@ class RepUi(Ui_Form):
         if modifiers == QtCore.Qt.ControlModifier and keyevent.key() == 86:
             if self._paste_method: self._paste_method()
 
-    def mousePressEvent(self, evt):
+    
 
-        if evt.button() == QtCore.Qt.LeftButton:
+    def mousePressEvent(self, evt):
+        
+        if evt.button() == QtCore.Qt.LeftButton:  
             self.Flag = True
             self.mouse_x = evt.globalX()
             self.mouse_y = evt.globalY()
@@ -90,5 +102,5 @@ class RepUi(Ui_Form):
         self.Flag = False
 
     def closeEvent(self, event) -> None:
-        self.tray_icon.setVisible(False)
+        self.tray_icon.setVisible(False)  
         self.run_flag = False

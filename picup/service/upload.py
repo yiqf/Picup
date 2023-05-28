@@ -87,7 +87,7 @@ class Upload(Base):
         
         self._ui.upload_text.setText(f"{compress_message}正在上传...")
         try:
-            custom_link = webdav.upload_file_obj(fp, filename, data)
+            custom_link = webdav.Webdav.upload_file_obj(fp, filename, data)
             fp.close()
             self._ui.upload_url.setText(custom_link)
             pyperclip.copy(custom_link)

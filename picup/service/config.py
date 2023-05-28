@@ -9,7 +9,7 @@ import base64
 import os
 
 import rsa
-from PyQt5.QtWidgets import QRadioButton
+from PySide2.QtWidgets import QRadioButton
 from webdav4.client import Client
 
 from picup import base_path, secret_key_path, config_data, config_path
@@ -24,13 +24,16 @@ class Config(Base):
     def __init__(self, *args, **kwargs):
         super(Config, self).__init__(*args, **kwargs)
 
+        
         self._encrypt = ToolEnDe()
         self._cfg_path = f"{config_path}/{config_data['account.filename']}"
 
+        
         self._ui.save_button.clicked.connect(lambda: self._parallel_run(self._save_config))
         self._ui.read_button.clicked.connect(self._get_config)
         self._ui.test_link_button.clicked.connect(lambda: self._parallel_run(self._link_test))
 
+        
         self.username_encrypt = config_data["account.username.encrypt"]
         self.password_encrypt = config_data["account.password.encrypt"]
 
@@ -120,11 +123,11 @@ class ToolEnDe:
 
     def encrypt(self, s: str) -> str:
         try:
-
+            
             s_encrypted = s.encode('utf-8')
-
+            
             crypto_encrypted = rsa.encrypt(s_encrypted, self.public_key)
-
+            
             crypto_encrypted_base64 = base64.b64encode(crypto_encrypted).decode('utf-8')
             return crypto_encrypted_base64
         except Exception as e:
@@ -132,11 +135,11 @@ class ToolEnDe:
 
     def decrypt(self, crypto_encrypted_base64: str) -> str:
         try:
-
+            
             crypto_encrypted = base64.b64decode(crypto_encrypted_base64.encode('utf-8'))
-
+            
             s_encrypted = rsa.decrypt(crypto_encrypted, self.private_key)
-
+            
             s = s_encrypted.decode("utf-8")
             return s
         except Exception as e:

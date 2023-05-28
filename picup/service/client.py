@@ -5,13 +5,11 @@ Version:  V 0.1
 File:     client.py
 Email:    yiqf2022@126.com
 """
-import os.path
 from tempfile import TemporaryFile
 
 import pyperclip
-import requests
 from PIL import ImageGrab, Image
-from PyQt5 import QtWidgets
+from PySide2 import QtWidgets
 from win32clipboard import OpenClipboard, GetClipboardData, CloseClipboard, CF_TEXT
 
 from picup.service.config import Config

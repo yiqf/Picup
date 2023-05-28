@@ -12,8 +12,8 @@ import threading
 import time
 from datetime import datetime
 
-from PyQt5.QtGui import QFont, QFontDatabase
-from PyQt5.QtWidgets import QPushButton, QLabel
+from PySide2.QtGui import QFont, QFontDatabase
+from PySide2.QtWidgets import QPushButton, QLabel
 
 from picup import fonts_path
 
@@ -23,25 +23,32 @@ class MyQLabel(QLabel):
     def __init__(self, *args, **kwargs):
         super(MyQLabel, self).__init__(*args, **kwargs)
         self._lock = threading.Lock()
-        self._step = 0
-        self.min_interval = 0.1
+        self._queue = []
+        self.min_interval = 1  
+        t = threading.Thread(target=self.setTextBlocking)
+        t.setDaemon(True)
+        t.start()
 
     def setText(self, arg__1: str):
         """
         多线程运行，避免影响主线程
         """
-        self._step += 1
-        threading.Thread(target=self.setTextBlocking, args=(arg__1, self._step)).start()
-
-    def setTextBlocking(self, arg__1: str, step):
-        """
-        重写setText函数，防止过快写入导致的程序报错
-        """
         self._lock.acquire()
-        if step == self._step:
-            super(MyQLabel, self).setText(arg__1)
-            time.sleep(self.min_interval)
+        self._queue.append(arg__1)
         self._lock.release()
+
+    def setTextBlocking(self):
+        """
+        重写setText函数，防止多线程写入导致的程序报错
+        """
+        while True:
+            time.sleep(0.1)
+            if self._queue:
+                self._lock.acquire()
+                if self._queue:
+                    arg__1 = self._queue.pop(0)
+                    super(MyQLabel, self).setText(arg__1)
+                self._lock.release()
 
 
 class MyPushButton(QPushButton):
@@ -54,13 +61,16 @@ class MyPushButton(QPushButton):
         self.setAcceptDrops(True)
         self._drag = None
 
+    
     def dragEnterEvent(self, event):
-
+        
+        
         if event.mimeData().hasText():
             event.accept()
         else:
             event.ignore()
 
+    
     def dropEvent(self, event):
         res = re.search("file:///(.*)", event.mimeData().text())
         if res and self._drag:
@@ -84,7 +94,7 @@ class MyFonts(QFont):
         if os.path.exists(font_path):
             id = QFontDatabase.addApplicationFont(font_path)
             fontstr = QFontDatabase.applicationFontFamilies(id)[0]
-
+            
             super(MyFonts, self).setFamily(fontstr)
         else:
             print(f"缺少字体{arg__1}")

@@ -9,4 +9,3 @@ account:
   password:
     encrypt: true
 
-

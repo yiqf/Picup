@@ -1,5 +1,12 @@
-from PyQt5 import QtCore, QtWidgets, QtGui
-from PyQt5.QtWidgets import QWidget
+
+
+
+
+
+
+
+from PySide2 import QtCore, QtWidgets, QtGui
+from PySide2.QtWidgets import QWidget
 from picup.ui.custom_inner import MyPushButton, MyFonts, MyQLabel
 
 
@@ -114,7 +121,7 @@ class Ui_Form(QWidget):
         self.file_source.setStyleSheet(
             "QPushButton{border-radius:20px;border:2px dashed white;}QPushButton:hover{background:rgba(85,85,255,0.3);}QPushButton:pressed{background:rgb(68,68,68);}")
         self.file_source.setObjectName("file_source")
-
+        
         self.upload_text = MyQLabel(self.upload)
         self.upload_text.setGeometry(QtCore.QRect(20 * scaleRate, 400 * scaleRate, 431 * scaleRate, 41 * scaleRate))
         font = MyFonts()
@@ -524,7 +531,28 @@ class Ui_Form(QWidget):
         self.compress_button_group.setObjectName("compress_button_group")
         self.compress_button_group.addButton(self.compress_close)
         self.compress.addWidget(self.compress_close)
-
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         self.horizontalLayout_9.addLayout(self.compress)
         self.horizontalLayout_9.setStretch(0, 1)
         self.horizontalLayout_9.setStretch(1, 5)
