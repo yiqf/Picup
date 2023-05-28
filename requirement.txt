@@ -148,4 +148,3 @@ Werkzeug==2.2.2
 wsproto==1.2.0
 yarg==0.1.9
 zipp==3.10.0
-[0m
