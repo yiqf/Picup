@@ -6,33 +6,24 @@ File:     webdav.py
 Email:    yiqf2022@126.com
 """
 import os
-import uuid
-from datetime import datetime
 
 from webdav4.client import Client
 
+from picup.exception.upload import UploadException
+
 
 def upload_file(filepath, data):
-    client = Client(f"{data['address']}{data['path']}", auth=(data["username"], data["password"]))
-    _, ext = os.path.splitext(filepath)
-    filename = gen_safe_filename(client, ext, data["rename_text"])
+    client = Client(f"{data['address']}", auth=(data["username"], data["password"]))
+    _, filename = os.path.split(filepath)
+    if client.exists(filename):
+        raise UploadException(f"{filename}已存在，请稍后再试")
     client.upload_file(filepath, filename)
     return f"{data['custom_link']}/{filename}"
 
 
-def upload_file_obj(fp, ext, data):
+def upload_file_obj(fp, filename, data):
     client = Client(base_url=data['address'], auth=(data["username"], data["password"]))
-    filename = gen_safe_filename(client, ext, data["rename_text"])
+    if client.exists(filename):
+        raise UploadException(f"{filename}已存在，请稍后再试")
     client.upload_fileobj(fp, filename)
     return f"{data['custom_link']}/{filename}"
-
-
-def gen_safe_filename(client: Client, ext: str, rename_text) -> str:
-    if not rename_text: rename_text = '%Y%m%d%H%M%S-{uuid}'
-    now_str = datetime.strftime(datetime.now(), rename_text)  
-    filename = f"{now_str}{ext}"
-    filename = filename.format(uuid=uuid.uuid4().hex)
-    while client.exists(filename):
-        now_str = datetime.strftime(datetime.now(), rename_text)
-        filename = f"{now_str}{ext}".replace("{uuid}", uuid.uuid4().hex)
-    return filename

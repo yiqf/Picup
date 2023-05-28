@@ -7,9 +7,9 @@ Email:    yiqf2022@126.com
 对完整ui进行继承附加操作
 """
 
-from PySide2 import QtCore
-from PySide2.QtCore import QCoreApplication
-from PySide2.QtWidgets import QSystemTrayIcon, QAction, QMenu
+from PyQt5 import QtCore
+from PyQt5.QtCore import QCoreApplication
+from PyQt5.QtWidgets import QSystemTrayIcon, QAction, QMenu
 
 from picup.ui.main_form import Ui_Form
 

@@ -5,25 +5,21 @@ Version:  V 0.1
 File:     Picup.py
 Email:    yiqf2022@126.com
 """
-
-
 import os
 import sys
 
-import PySide2
+import PyQt5
 
 from picup.service import client
-from PySide2.QtGui import QIcon
-from PySide2.QtWidgets import QApplication
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QApplication
 
-
-dirname = os.path.dirname(PySide2.__file__)
+dirname = os.path.dirname(PyQt5.__file__)
 plugin_path = os.path.join(dirname, 'plugins', 'platforms')
 os.environ['QT_QPA_PLATFORM_PLUGIN_PATH'] = plugin_path
 
-
 if __name__ == '__main__':
-    __version__ = "2.2.0"
+    __version__ = "2.2.1"
 
     app = QApplication(sys.argv)
     scaleRate = app.screens()[0].logicalDotsPerInch() / 120

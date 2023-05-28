@@ -7,12 +7,15 @@ Email:    yiqf2022@126.com
 """
 import os
 import re
+import uuid
+from datetime import datetime
 from tempfile import TemporaryFile
 
 import pyperclip
 import requests
 
 from picup.compress.public import CompressDataDto
+from picup.exception.upload import UploadException
 from picup.service.base import Base
 from picup.storage import webdav
 
@@ -32,14 +35,34 @@ class Upload(Base):
             self._ui.upload_text.setText("请上传文件对象！")
         else:
             with open(filepath, "rb") as fp:
-                _, ext = os.path.splitext(filepath)
-                self._upload_with_obj(step, fp, ext.lower(), data)
+                filename = self._get_filename(data, os.path.split(filepath)[1])
+                self._upload_with_obj(step, fp, filename, data)
 
-    def _upload_with_obj(self, step, fp, ext, data):
+    def _upload_with_url(self, step, data, url):
+        if url.startswith("http"):  
+            self._ui.upload_text.setText(f"图片读取中({url})...")
+            result = re.search(r".*?([^/\.]*\.[^\.]*$)", url.split("?")[0])
+            if result:
+                filename = self._get_filename(data, result.group(1))
+            else:
+                raise UploadException("文件名获取失败，请检查链接")
+            fp = None
+            try:
+                response = requests.get(url, timeout=100)
+                fp = TemporaryFile()
+                fp.write(response.content)
+                fp.seek(0)
+            except Exception as e:
+                self._ui.upload_text.setText(f"图片读取失败 {e.__class__.__name__}")
+            if fp: self._upload_with_obj(step, fp, filename, data)
+        else:
+            self._ui.upload_text.setText(f"请传入url,当前输入\n{url}")
+
+    def _upload_with_obj(self, step, fp, filename, data):
         """
         拖拽进入，按文件对象上传
         """
-
+        
         compress_message = ""
         compress_button_id = data["compress"]
         if compress_button_id != 0:
@@ -58,31 +81,33 @@ class Upload(Base):
             fp.write(dto.target_data)
             fp.seek(0)
 
+        
         if not self._is_enabled(step): return
 
+        
         self._ui.upload_text.setText(f"{compress_message}正在上传...")
         try:
-            custom_link = webdav.upload_file_obj(fp, ext, data)
+            custom_link = webdav.upload_file_obj(fp, filename, data)
             fp.close()
             self._ui.upload_url.setText(custom_link)
             pyperclip.copy(custom_link)
             self._ui.upload_text.setText(f"{compress_message}{self._add_time(f'上传成功！')}")
+        except UploadException as e:
+            self._ui.upload_text.setText(str(e))
         except Exception as e:
             self._ui.upload_text.setText(f"上传失败，请检查网络和参数配置！\n{e.__class__.__name__}")
 
-    def _upload_with_url(self, step, data, url):
-        if url.startswith("http"):
-            self._ui.upload_text.setText(f"图片读取中({url})...")
-            result = re.search(r".*(\.[^\.]*$)", url.split("?")[0])
-            ext = result.group(1) if result else ""
-            fp = None
-            try:
-                response = requests.get(url, timeout=100)
-                fp = TemporaryFile()
-                fp.write(response.content)
-                fp.seek(0)
-            except Exception as e:
-                self._ui.upload_text.setText(f"图片读取失败 {e.__class__.__name__}")
-            if fp: self._upload_with_obj(step, fp, ext, data)
+    @staticmethod
+    def _get_filename(data: dict, filename: str) -> str:
+        split_text = filename.split(".")
+        ext = f".{split_text.pop(-1)}"
+        name = ".".join(split_text)
+        if name and data.get("rename") == 0:
+            return f"{name}{ext.lower()}"
         else:
-            self._ui.upload_text.setText(f"请传入url,当前输入\n{url}")
+            rename_text = data.get("rename_text")
+            if not rename_text: rename_text = '%Y%m%d%H%M%S-{uuid}'
+            now_str = datetime.strftime(datetime.now(), rename_text)  
+            filename = f"{now_str}{ext.lower()}"
+            filename = filename.format(uuid=uuid.uuid4().hex)
+            return filename

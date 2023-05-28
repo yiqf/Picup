@@ -8,7 +8,7 @@ Email:    yiqf2022@126.com
 import time
 from threading import Thread
 
-from PySide2 import QtCore, QtWidgets
+from PyQt5 import QtCore, QtWidgets
 
 from picup.compress.base import CompressBase
 from picup.ui.custom_inner import MyFonts

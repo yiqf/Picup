@@ -11,7 +11,7 @@ from tempfile import TemporaryFile
 import pyperclip
 import requests
 from PIL import ImageGrab, Image
-from PySide2 import QtWidgets
+from PyQt5 import QtWidgets
 from win32clipboard import OpenClipboard, GetClipboardData, CloseClipboard, CF_TEXT
 
 from picup.service.config import Config
@@ -102,7 +102,8 @@ class Client(Config, Upload):
                 fp = TemporaryFile()
                 im.save(fp, format="JPEG")
                 fp.seek(0)
-                self._upload_with_obj(step=step, fp=fp, ext=".jpg", data=data)
+                filename = self._get_filename(data=data, filename=".jpg")
+                self._upload_with_obj(step=step, fp=fp, filename=filename, data=data)
             elif isinstance(im, list):
                 self._upload_with_path(step=step, data=data, filepath=im[0])
             else:

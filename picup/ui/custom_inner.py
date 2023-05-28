@@ -12,8 +12,8 @@ import threading
 import time
 from datetime import datetime
 
-from PySide2.QtGui import QFont, QFontDatabase
-from PySide2.QtWidgets import QPushButton, QLabel
+from PyQt5.QtGui import QFont, QFontDatabase
+from PyQt5.QtWidgets import QPushButton, QLabel
 
 from picup import fonts_path
 

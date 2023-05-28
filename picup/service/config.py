@@ -9,7 +9,7 @@ import base64
 import os
 
 import rsa
-from PySide2.QtWidgets import QRadioButton
+from PyQt5.QtWidgets import QRadioButton
 from webdav4.client import Client
 
 from picup import base_path, secret_key_path, config_data, config_path

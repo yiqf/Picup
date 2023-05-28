@@ -1,5 +1,5 @@
-from PySide2 import QtCore, QtWidgets, QtGui
-from PySide2.QtWidgets import QWidget
+from PyQt5 import QtCore, QtWidgets, QtGui
+from PyQt5.QtWidgets import QWidget
 from picup.ui.custom_inner import MyPushButton, MyFonts, MyQLabel
 
 
